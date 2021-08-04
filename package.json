@@ -1,0 +1,28 @@
+{
+  "name": "boldt",
+  "version": "0.0.1",
+  "description": "Simple application that repeats parameters and values sent by HTTP post requests.",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^27.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fboldt/heroku.git"
+  },
+  "keywords": [
+    "web",
+    "development",
+    "learning"
+  ],
+  "author": "Francisco de Assis Boldt",
+  "bugs": {
+    "url": "https://github.com/fboldt/heroku/issues"
+  },
+  "homepage": "https://github.com/fboldt/heroku#readme"
+}
