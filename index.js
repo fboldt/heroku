@@ -1,10 +1,26 @@
-/*
- * Ativa servidor
-*/
-
 const http = require('http');
 const url = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
+
+const roteador = {};
+roteador.hello = function (data, callback) {
+    callback(200, 'Hello World!');
+};
+
+roteador.echopayload = require('./echopayload').echopayload;
+
+roteador.notFound = function (data, callback) {
+    callback(404,listaDeRotas(roteador));
+};
+
+function listaDeRotas(roteador) {
+    let rotas = Object.keys(roteador);
+    let links = '';
+    for (rota of rotas) {
+        links += `<a href='${rota}'>${rota}</a><br>`;
+    }
+    return links;
+}
 
 const server = http.createServer(main);
 
@@ -35,10 +51,10 @@ function main(req, res) {
 
     // Funções auxiliares
     function getHandler(trimmedPathName) {
-        if (Object.keys(handlers).includes(trimmedPathName)) {
-            return handlers[trimmedPathName];
+        if (Object.keys(roteador).includes(trimmedPathName)) {
+            return roteador[trimmedPathName];
         }
-        return handlers.notFound;
+        return roteador.notFound;
     }
     function getData(req) {
         const data = {};
@@ -56,34 +72,3 @@ server.listen(porta, () => {
     console.log("Servidor onvindo na porta: ", porta);
 });
 
-
-const handlers = {};
-
-handlers.sample = function (data, callback) {
-    callback(406, { 'name': 'sample handler' });
-};
-
-handlers.formulario = function (data, callback) {
-    const formulario = `
-<!doctype html>
-<html>
-<body>
-    <form action="/" method="post">
-        <input type="text" name="somefield" placeholder="some text">
-        <input type="submit">
-    </form>
-</body>
-</html>
-`;
-    callback(200, formulario);
-};
-
-handlers.notFound = function (data, callback) {
-    let rotas = Object.keys(handlers);
-    rotas.pop('notFound');
-    let links = '';
-    for (rota of rotas) {
-        links += `<a href='${rota}'>${rota}</a><br>`;
-    }
-    callback(404,links);
-};
