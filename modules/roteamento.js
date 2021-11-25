@@ -1,35 +1,31 @@
 const url = require('url');
 
+const rotas = {};
+
+function rotaDefault(req, res) {
+    res.writeHead(404, {'Content-Type': 'text/html'});
+    let links = '';
+    Object.keys(rotas).forEach( rota => {
+        links += `<a href='${rota}'>${rota}</a><br>`;
+    });
+    res.end(links);
+};
+
 class Roteador {
-    constructor() {
-        this.rotas = {};
-    }
     handler(rota) {
-        if (Object.keys(this.rotas).includes(rota)) {
-            return this.rotas[rota];
+        if (Object.keys(rotas).includes(rota)) {
+            return rotas[rota];
         }
-        return function (req, res) {
-            res.writeHead(404);
-            res.write("Not Found");
-            res.end();
-        };
+        return rotaDefault;
     }
     getRota(req) {
         const parsedUrl = url.parse(req.url, true);
         return parsedUrl.pathname.replace(/^\/+|\/+$/g, '');
     }
-    getRotas() {
-        return Object.keys(this.rotas);
-    }
     addRota(rota, callback) {
-        this.rotas[rota] = callback;
-    }
-    listaRotas() {
-        let links = '';
-        this.getRotas().forEach( rota => {
-            links += `<a href='${rota}'>${rota}</a><br>`;
-        });
-        return links;
+        rotas[rota] = callback;
     }
 }
-exports.roteador = new Roteador();
+exports.novoRoteador = function () {
+    return new Roteador();
+};

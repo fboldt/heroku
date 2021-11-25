@@ -1,16 +1,21 @@
+const url = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
-
-const rota = "echopayload";
 
 exports.handler = function (req, res) {
     if (req.method.toUpperCase() == 'GET') {
-        retornaFormulario(res);
+        retornaFormulario(req, res);
     } else {
         retornaConteudoRequisicao(req, res);
     }
 };
 
-function retornaFormulario(res) {
+function getRota(req) {
+    const parsedUrl = url.parse(req.url, true);
+    return parsedUrl.pathname.replace(/^\/+|\/+$/g, '');
+}
+
+function retornaFormulario(req, res) {
+    const rota = getRota(req);
     const formulario = `
 <!doctype html>
 <html>
