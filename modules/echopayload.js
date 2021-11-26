@@ -24,9 +24,9 @@ function retornaFormulario(req, res) {
     <html>
     <body>
         <form action="${rota}" method="post">
-        <input type="text" name="somefield" placeholder="some text">
-        <input type="submit">
-    </form>
+            <input type="text" name="somefield" placeholder="some text">
+            <input type="submit">
+        </form>
     </body>
     </html>
     `;
