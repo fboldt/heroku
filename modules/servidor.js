@@ -1,6 +1,10 @@
 const http = require('http');
 const roteamento = require('./roteamento');
 
+exports.novoServidor = function () {
+    return new Servidor();
+};
+
 const roteador = roteamento.novoRoteador();
 
 function rotearReq(req, res) {
@@ -21,7 +25,3 @@ class Servidor {
         roteador.addRota(rota, callback);
     }
 }
-
-exports.novoServidor = function () {
-    return new Servidor();
-};

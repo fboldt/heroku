@@ -1,5 +1,9 @@
 const url = require('url');
 
+exports.novoRoteador = function () {
+    return new Roteador();
+};
+
 const rotas = {};
 
 function rotaDefault(req, res) {
@@ -26,6 +30,3 @@ class Roteador {
         rotas[rota] = callback;
     }
 }
-exports.novoRoteador = function () {
-    return new Roteador();
-};
