@@ -51,7 +51,7 @@
             withDB(db => {
                 let req = db.add({"texto": texto, "feito": false});
                 req.onsuccess = evento => {
-                    tarefa.setAttribute('id', evento.target.result);
+                    tarefa.setAttribute('id', `task-${evento.target.result}`);
                 }
             });
         }
@@ -82,12 +82,13 @@
 
         function salvaChecagem(eventoCheckbox) {
             withDB(db => {
-                let id = parseInt(eventoCheckbox.target.parentNode.id);
-                let req = db.get(id);
+                let id = eventoCheckbox.target.parentNode.id;
+                let key = parseInt(id.slice(5));
+                let req = db.get(key);
                 req.onsuccess = eventoReq => {
                     let registro = eventoReq.target.result;
                     registro["feito"] = eventoCheckbox.target.checked;
-                    db.put(registro, id);
+                    db.put(registro, key);
                 }
             });
         }
@@ -105,7 +106,9 @@
             const tarefa = lixeira.parentNode;
             tarefa.remove();
             withDB(db => {
-                db.delete(parseInt(tarefa.id));
+                let id = tarefa.id;
+                let key = parseInt(id.slice(5));
+                db.delete(parseInt(key));
             });
         }
 
@@ -119,7 +122,6 @@
             request.onupgradeneeded = () => {
                 let db = request.result;
                 db.createObjectStore("tarefas", {autoIncrement: true});
-                callback(getStore(db));
             }
             function getStore(db) {
                 return db.transaction(["tarefas"], "readwrite").objectStore("tarefas");
@@ -131,11 +133,13 @@
                 let cursor = evento.target.result;
                 if (cursor) {
                     const tarefa = novaTarefa(cursor.value.texto);
-                    tarefa.setAttribute("id", cursor.key);
+                    document.querySelector("#lista").append(tarefa);
+                    const id = cursor.key;
+                    tarefa.setAttribute("id", `task-${id}`);
                     if (cursor.value.feito) {
                         tarefa.firstElementChild.click();
+                        // document.querySelector(`#task-${id}`).firstElementChild.click();
                     }
-                    document.querySelector("#lista").append(tarefa);
                     cursor.continue();
                 }
             }
