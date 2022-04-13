@@ -18,7 +18,11 @@ class Servidor {
     }
     ativar(porta) {
         this.httpServer.listen(porta, () => {
-            console.log("Servidor onvindo na porta: ", porta);
+            if (this.httpServer.address().address == "::") {
+                console.log(`http://127.0.0.1:${porta}`);
+            } else {
+                console.log(`http://${this.httpServer.address().address}:${porta}`);
+            }
         });
     }
     addRota(rota, callback) {

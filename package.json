@@ -1,7 +1,7 @@
 {
   "name": "boldt",
   "version": "0.0.1",
-  "description": "Simple application that repeats parameters and values sent by HTTP post requests.",
+  "description": "Initial prototype for all projects.",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
